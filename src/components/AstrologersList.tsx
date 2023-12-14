@@ -1,9 +1,10 @@
 // AstrologersList.tsx
 import React from "react";
-import { useGetAstrologersQuery } from "../api";
+import { useGetAstrologersQuery } from "../api/api";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
 
 interface Astrologer {
   _id: string;
@@ -21,20 +22,12 @@ const columns: GridColDef[] = [
   { field: "email", headerName: "Email", width: 250 },
   { field: "languages", headerName: "Languages", width: 200 },
   { field: "specialties", headerName: "Specialties", width: 200 },
-  {
-    field: "edit",
-    headerName: "Edit",
-    width: 100,
-    renderCell: (params) => (
-      <Link to={`/edit/${params.id}`} style={{ textDecoration: "none" }}>
-        <button>Edit</button>
-      </Link>
-    ),
-  },
 ];
 
 const AstrologersList: React.FC = () => {
-  const { data: astrologers, isLoading } = useGetAstrologersQuery({});
+  const navigate = useNavigate();
+
+  const { data: astrologers, isLoading } = useGetAstrologersQuery([]);
 
   console.log(astrologers);
 
@@ -55,13 +48,33 @@ const AstrologersList: React.FC = () => {
     specialties: astrologer.specialties.join(", "),
   }));
 
+  const handleEditClick = (id: string) => {
+    navigate(`/edit/${id}`);
+  };
+
+
+  
+
   return (
     <>
       <h1>Astrologers List</h1>
       <Box sx={{ height: 400, width: "100%" }}>
         <DataGrid
           rows={rows}
-          columns={columns}
+          columns={columns.concat({
+            field: "edit",
+            headerName: "Edit",
+            width: 100,
+            renderCell: (params) => (
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => handleEditClick(params.row.id)}
+              >
+                Edit
+              </Button>
+            ),
+          })}
           checkboxSelection
           disableRowSelectionOnClick
         />
