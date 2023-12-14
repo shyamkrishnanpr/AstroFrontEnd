@@ -3,6 +3,7 @@ import React from "react";
 import { useGetAstrologersQuery } from "../api";
 import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { Link } from "react-router-dom";
 
 interface Astrologer {
   _id: string;
@@ -12,11 +13,6 @@ interface Astrologer {
   languages: string[];
   specialties: string[];
 }
-
-const handleEditClick = (id: string) => {
-  // Handle the "Edit" button click, e.g., navigate to an edit page
-  console.log(`Edit button clicked for Astrologer ID: ${id}`);
-};
 
 const columns: GridColDef[] = [
   { field: "_id", headerName: "ID", width: 70 },
@@ -30,18 +26,14 @@ const columns: GridColDef[] = [
     headerName: "Edit",
     width: 100,
     renderCell: (params) => (
-      <button
-        onClick={() => handleEditClick(params.row.id)}
-        style={{ cursor: "pointer" }}
-      >
-        Edit
-      </button>
+      <Link to={`/edit/${params.id}`} style={{ textDecoration: "none" }}>
+        <button>Edit</button>
+      </Link>
     ),
   },
 ];
 
 const AstrologersList: React.FC = () => {
-  
   const { data: astrologers, isLoading } = useGetAstrologersQuery({});
 
   console.log(astrologers);
