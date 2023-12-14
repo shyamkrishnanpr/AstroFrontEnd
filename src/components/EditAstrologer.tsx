@@ -3,19 +3,14 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetAstrologersQuery, useUpdateAstrologerMutation } from "../api/api";
+import {
+  useGetAstrologersQuery,
+  useUpdateAstrologerMutation,
+} from "../api/api";
 
 import { styled } from "@mui/system";
 
-
-interface Astrologer {
-  _id: string;
-  name: string;
-  gender: string;
-  email: string;
-  languages: string[];
-  specialties: string[];
-}
+import { validateForm } from "../validation/FormValidation";
 
 // Styled components for improved UI
 const Container = styled("div")({
@@ -43,7 +38,6 @@ const ErrorMessage = styled("p")({
   fontWeight: "bold",
 });
 
-
 const SaveButton = styled(Button)({
   margin: 49,
 });
@@ -56,6 +50,10 @@ const EditAstrologer: React.FC = () => {
   const { data: astrologer, isLoading, error } = useGetAstrologersQuery([]);
 
   const selectedAstrologer = astrologer?.find((a: any) => a._id === id);
+
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
 
   const [formData, setFormData] = useState({
     name: selectedAstrologer?.name || "",
@@ -72,17 +70,25 @@ const EditAstrologer: React.FC = () => {
 
   const handleSubmit = async () => {
     try {
-      await updateAstrologerMutation({
-        id,
-        updatedAstrologer: formData,
-      });
+      const errors = validateForm(formData);
 
-      setIsSaved(true);
+      if (Object.keys(errors).length === 0) {
+        await updateAstrologerMutation({
+          id,
+          updatedAstrologer: formData,
+        });
 
-      setTimeout(() => {
-        setIsSaved(false);
-        navigate(`/edit/${id}`);
-      }, 2000);
+        setIsSaved(true);
+
+        setTimeout(() => {
+          setIsSaved(false);
+          navigate(`/edit/${id}`);
+        }, 2000);
+        setValidationErrors({});
+      } else {
+        setValidationErrors(errors);
+        console.log("validation failed", errors);
+      }
     } catch (err) {
       console.error("Error updating astrologer:", err);
       // Handle error (e.g., show a user-friendly error message)
@@ -111,6 +117,8 @@ const EditAstrologer: React.FC = () => {
           name="name"
           value={formData.name}
           onChange={handleChange}
+          error={!!validationErrors.name}
+          helperText={validationErrors.name || " "}
           style={{ margin: 10 }}
         />
         <TextField
@@ -118,6 +126,8 @@ const EditAstrologer: React.FC = () => {
           name="gender"
           value={formData.gender}
           onChange={handleChange}
+          error={!!validationErrors.gender}
+          helperText={validationErrors.gender || " "}
           style={{ margin: 10 }}
         />
         <TextField
@@ -125,6 +135,8 @@ const EditAstrologer: React.FC = () => {
           name="email"
           value={formData.email}
           onChange={handleChange}
+          error={!!validationErrors.email}
+          helperText={validationErrors.email || " "}
           style={{ margin: 10 }}
         />
         <TextField
@@ -132,6 +144,8 @@ const EditAstrologer: React.FC = () => {
           name="languages"
           value={formData.languages}
           onChange={handleChange}
+          error={!!validationErrors.languages}
+          helperText={validationErrors.languages || " "}
           style={{ margin: 10 }}
         />
         <TextField
@@ -139,6 +153,8 @@ const EditAstrologer: React.FC = () => {
           name="specialties"
           value={formData.specialties}
           onChange={handleChange}
+          error={!!validationErrors.specialties}
+          helperText={validationErrors.specialties || " "}
           style={{ margin: 10 }}
         />
 
