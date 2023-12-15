@@ -16,6 +16,8 @@ import { validateForm } from "../validation/FormValidation";
 const Container = styled("div")({
   maxWidth: 700,
   margin: "auto",
+  marginTop:50,
+  
   padding: 16,
   textAlign: "center",
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",

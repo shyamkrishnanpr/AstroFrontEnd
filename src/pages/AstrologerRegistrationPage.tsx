@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import AstrologerForm from '../components/AstrologerForm'
+import Navbar from '../components/Navbar';
 
 
 const AstrologerRegistrationPage:React.FC = () => {
@@ -17,10 +18,14 @@ const handleSuccess = () => {
     }, 3000); 
   };
   return (
+
+    <>
+   <Navbar/>
     <div>
         {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
       <AstrologerForm onSuccess={handleSuccess}/>
     </div>
+    </>
   )
 }
 

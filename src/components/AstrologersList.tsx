@@ -1,7 +1,7 @@
 // AstrologersList.tsx
 import React from "react";
 import { useGetAstrologersQuery } from "../api/api";
-import Box from "@mui/material/Box";
+
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -16,12 +16,12 @@ interface Astrologer {
 }
 
 const columns: GridColDef[] = [
-  { field: "_id", headerName: "ID", width: 70 },
+  { field: "_id", headerName: "", width: 70 },
   { field: "name", headerName: "Name", width: 200 },
-  { field: "gender", headerName: "Gender", width: 120 },
-  { field: "email", headerName: "Email", width: 250 },
-  { field: "languages", headerName: "Languages", width: 200 },
-  { field: "specialties", headerName: "Specialties", width: 200 },
+  { field: "gender", headerName: "Gender", width: 200 },
+  { field: "email", headerName: "Email", width: 200 },
+  { field: "languages", headerName: "Languages", width: 250 },
+  { field: "specialties", headerName: "Specialties", width: 250 },
 ];
 
 const AstrologersList: React.FC = () => {
@@ -52,33 +52,29 @@ const AstrologersList: React.FC = () => {
     navigate(`/edit/${id}`);
   };
 
-
-  
-
   return (
     <>
       <h1>Astrologers List</h1>
-      <Box sx={{ height: 400, width: "100%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns.concat({
-            field: "edit",
-            headerName: "Edit",
-            width: 100,
-            renderCell: (params) => (
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => handleEditClick(params.row.id)}
-              >
-                Edit
-              </Button>
-            ),
-          })}
-          checkboxSelection
-          disableRowSelectionOnClick
-        />
-      </Box>
+
+      <DataGrid
+        rows={rows}
+        columns={columns.concat({
+          field: "edit",
+          headerName: "Edit",
+          width: 100,
+          renderCell: (params) => (
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => handleEditClick(params.row.id)}
+            >
+              Edit
+            </Button>
+          ),
+        })}
+        checkboxSelection
+        disableRowSelectionOnClick
+      />
     </>
   );
 };

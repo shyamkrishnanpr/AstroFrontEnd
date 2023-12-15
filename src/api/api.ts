@@ -21,10 +21,7 @@ export const api = createApi({
       query: () => "api/astrologers",
     }),
 
-    updateAstrologer: builder.mutation<
-      Astrologer,
-      { id?: string; updatedAstrologer: Astrologer }
-    >({
+    updateAstrologer: builder.mutation<Astrologer,{ id?: string; updatedAstrologer: Astrologer }>({
       query: ({
         id,
         updatedAstrologer,
@@ -33,7 +30,7 @@ export const api = createApi({
         updatedAstrologer: Astrologer;
       }) => ({
         url: `api/astrologers/${id}`,
-        method: "PUT", // Adjust the HTTP method as per your API
+        method: "PUT", 
         body: updatedAstrologer,
       }),
 
@@ -42,19 +39,18 @@ export const api = createApi({
       },
     }),
 
-
-
     createAstrologer: builder.mutation<any, Partial<Astrologer>>({
       query: (astrologer) => ({
-        url: 'api/astrologers/register',
-        method: 'POST',
+        url: "api/astrologers/register",
+        method: "POST",
         body: astrologer,
       }),
     }),
-
-
-
   }),
 });
 
-export const { useGetAstrologersQuery, useUpdateAstrologerMutation, useCreateAstrologerMutation } = api;
+export const {
+  useGetAstrologersQuery,
+  useUpdateAstrologerMutation,
+  useCreateAstrologerMutation,
+} = api;
