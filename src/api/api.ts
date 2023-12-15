@@ -11,7 +11,6 @@ interface Astrologer {
   specialties: string[];
 }
 
-
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -22,25 +21,40 @@ export const api = createApi({
       query: () => "api/astrologers",
     }),
 
-    updateAstrologer:builder.mutation<Astrologer, { id?: string; updatedAstrologer: Astrologer }>({
-      query: ({ id, updatedAstrologer }:{id?:string,updatedAstrologer:Astrologer}) => ({
+    updateAstrologer: builder.mutation<
+      Astrologer,
+      { id?: string; updatedAstrologer: Astrologer }
+    >({
+      query: ({
+        id,
+        updatedAstrologer,
+      }: {
+        id?: string;
+        updatedAstrologer: Astrologer;
+      }) => ({
         url: `api/astrologers/${id}`,
         method: "PUT", // Adjust the HTTP method as per your API
         body: updatedAstrologer,
       }),
 
-
       onQueryStarted: (query) => {
         console.log(`Query started: ${query}`);
       },
-    
-     
+    }),
 
 
 
-    })
- 
+    createAstrologer: builder.mutation<any, Partial<Astrologer>>({
+      query: (astrologer) => ({
+        url: 'api/astrologers/register',
+        method: 'POST',
+        body: astrologer,
+      }),
+    }),
+
+
+
   }),
 });
 
-export const { useGetAstrologersQuery,useUpdateAstrologerMutation } = api;
+export const { useGetAstrologersQuery, useUpdateAstrologerMutation, useCreateAstrologerMutation } = api;
