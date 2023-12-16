@@ -49,3 +49,11 @@ Run the following command to start the React frontend server.
   npm run dev
  
 ```
+
+#### Conclusion
+
+Thank you for following these deployment instructions to set up the React project. By following these steps, you've successfully frontend components.
+
+For any questions or clarifications, please feel free to contact me at shyamkrishnasby@gmail.com
+
+#### Thank you for reviewing my submission.
