@@ -16,8 +16,8 @@ This is the frontend for the full stack project.
 
 #### Prerequisites:
 
-- Node.js should be installed on your system.
-- MongoDB server should be running.
+- Node.js and npm should be installed on your system.
+
 
 #### Step 1: Clone the Project
 
@@ -30,7 +30,7 @@ git clone https://github.com/shyamkrishnanpr/AstroFrontEnd.git
 
 Navigate to the `AstroFrontEnd` directory within the cloned project using the command:
 ```bash
-cd AstroFrontend/AstroFrontEnd
+cd AstroFrontEnd
  
 ```
 #### Step 3: Install Dependencies
