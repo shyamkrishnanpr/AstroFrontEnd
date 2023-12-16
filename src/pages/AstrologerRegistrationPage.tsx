@@ -11,7 +11,7 @@ const [successMessage, setSuccessMessage] = React.useState<string | null>(null);
 
 const handleSuccess = () => {
     
-    setSuccessMessage('Astrologer registration successful!');
+    setSuccessMessage(' Successfully registered!');
     setTimeout(() => {
       setSuccessMessage(null);
       navigate('/');
@@ -22,7 +22,8 @@ const handleSuccess = () => {
     <>
       <Navbar />
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {successMessage && <div style={{ color: 'green', marginTop: '10px',fontSize: '1.2rem', padding: '10px' }}>{successMessage}</div>}
+      
+        {successMessage && <div style={{ color: 'green', marginTop: '5px',fontSize: '1.2rem', padding: '10px' }}>{successMessage}</div>}
         <AstrologerForm onSuccess={handleSuccess} />
       </div>
     </>

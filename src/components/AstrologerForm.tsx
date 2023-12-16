@@ -1,15 +1,15 @@
-import React from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { Button, TextField } from "@mui/material";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import React, { useState } from "react";
+import { Button, TextField, Typography } from "@mui/material";
+import { styled } from "@mui/system";
+import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import ListItemText from "@mui/material/ListItemText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-import { styled } from "@mui/system";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import ListItemText from "@mui/material/ListItemText";
 import { useCreateAstrologerMutation } from "../api/api";
+import { validateForm } from "../validation/RegisterValidation";
 
 interface AstrologerFormData {
   name: string;
@@ -33,8 +33,7 @@ const MenuProps = {
 const Container = styled("div")({
   maxWidth: 700,
   margin: "auto",
-  marginTop:50,
-  
+  marginTop: 30,
   padding: 16,
   textAlign: "center",
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -42,7 +41,7 @@ const Container = styled("div")({
   background: "#fff",
 });
 
-const languageOPtions = [
+const languageOptions = [
   "English",
   "Hindi",
   "Kannada",
@@ -63,125 +62,151 @@ interface AstrologerFormProps {
 }
 
 const AstrologerForm: React.FC<AstrologerFormProps> = ({ onSuccess }) => {
-  const [languages, setlanguages] = React.useState<string[]>([]);
-  const [specialties, setSpecialties] = React.useState<string[]>([]);
+
+  const [formData, setFormData] = useState<AstrologerFormData>({
+    name: "",
+    gender: "",
+    email: "",
+    languages: [],
+    specialties: [],
+  });
+
+  const [validationErrors, setValidationErrors] = useState<Partial<Record<keyof AstrologerFormData, string>>>({});
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const [createAstrologer] = useCreateAstrologerMutation();
 
-  const handleChangeLanguage = (event: SelectChangeEvent<typeof languages>) => {
+  const handleChangeLanguage = (event: SelectChangeEvent<typeof formData.languages>) => {
     const {
       target: { value },
     } = event;
-    setlanguages(value as string[]);
+    setFormData((prevData) => ({ ...prevData, languages: value as string[] }));
   };
 
-  const handleChangeSpecialties = (
-    event: SelectChangeEvent<typeof specialties>
-  ) => {
+  const handleChangeSpecialties = (event: SelectChangeEvent<typeof formData.specialties>) => {
     const {
       target: { value },
     } = event;
-    setSpecialties(value as string[]);
+    setFormData((prevData) => ({ ...prevData, specialties: value as string[] }));
   };
 
-  const { register, handleSubmit } = useForm<AstrologerFormData>();
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  const onSubmit: SubmitHandler<AstrologerFormData> = async (data) => {
-    try {
-      await createAstrologer(data).unwrap();
-      onSuccess();
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-      console.log(data);
-    } catch (error) {
-      console.log(error);
+    const errors = validateForm(formData);
+
+    if (Object.keys(errors).length === 0) {
+      try {
+        await createAstrologer(formData).unwrap();
+        onSuccess();
+        console.log("Form data submitted:", formData);
+      } catch (error) {
+        setServerError("An error occurred while submitting the form. Please try again later.");
+        console.log("Error submitting form:", error);
+      }
+    } else {
+      
+      setValidationErrors(errors);
+      console.log("Validation errors:", errors);
     }
   };
-
-  const Title = styled("h2")({
-    color: "#333",
-    marginBottom: 5,
-  });
 
   return (
     <div>
       <Container>
-      <Title> New Registration </Title>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          {...register("name")}
-          label="Name"
-          required
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          {...register("gender")}
-          label="Gender"
-          required
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          {...register("email")}
-          type="email"
-          label="Email"
-          required
-          fullWidth
-          margin="normal"
-        />
-        <FormControl sx={{ mt: 1, width: "100%" }} {...register("languages")}>
-          <InputLabel id="demo-multiple-checkbox-label">Languages*</InputLabel>
-          <Select
-            labelId="demo-multiple-checkbox-label"
-            id="demo-multiple-checkbox"
-            multiple
-            {...register("languages")}
-            value={languages}
-            onChange={handleChangeLanguage}
-            input={<OutlinedInput label="Languages" />}
-            renderValue={(selected) => selected.join(", ")}
-            MenuProps={MenuProps}
-          >
-            {languageOPtions.map((name) => (
-              <MenuItem key={name} value={name}>
-                <Checkbox checked={languages.indexOf(name) > -1} />
-                <ListItemText primary={name} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      {serverError && (
+          <Typography variant="body1" color="error" style={{ marginBottom: 16 }}>
+            {serverError}
+          </Typography>
+        )}
+        <h2 style={{ color: "#333", marginBottom: 5 }}>New Registration</h2>
+        <form onSubmit={onSubmit}>
+          <TextField
+            name="name"
+            label="Name"
+            required
+            fullWidth
+            value={formData.name}
+            onChange={handleInputChange}
+            error={!!validationErrors.name}
+            helperText={validationErrors.name || " "}
+            margin="normal"
+          />
+          <TextField
+            name="gender"
+            label="Gender"
+            required
+            fullWidth
+            value={formData.gender}
+            onChange={handleInputChange}
+            error={!!validationErrors.gender}
+            helperText={validationErrors.gender || " "}
+            margin="normal"
+          />
+          <TextField
+            name="email"
+            type="email"
+            label="Email"
+            required
+            fullWidth
+            value={formData.email}
+            onChange={handleInputChange}
+            error={!!validationErrors.email}
+            helperText={validationErrors.email || " "}
+            margin="normal"
+          />
+          <FormControl sx={{  width: "100%" }}>
+            <InputLabel id="demo-multiple-checkbox-label">Languages*</InputLabel>
+            <Select
+              labelId="demo-multiple-checkbox-label"
+              id="demo-multiple-checkbox"
+              multiple
+              value={formData.languages}
+              required
+              onChange={handleChangeLanguage}
+              input={<OutlinedInput label="Languages" />}
+              renderValue={(selected) => selected.join(", ")}
+              MenuProps={MenuProps}
+            >
+              {languageOptions.map((name) => (
+                <MenuItem key={name} value={name}>
+                  <Checkbox checked={formData.languages.indexOf(name) > -1} />
+                  <ListItemText primary={name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-        <FormControl
-          sx={{ mt: 1, mb: 1, width: "100%" }}
-          {...register("specialties")}
-        >
-          <InputLabel id="demo-multiple-checkbox-label">
-            Specialties*
-          </InputLabel>
-          <Select
-            labelId="demo-multiple-checkbox-label"
-            id="demo-multiple-checkbox"
-            multiple
-            {...register("specialties")}
-            value={specialties}
-            onChange={handleChangeSpecialties}
-            input={<OutlinedInput label="specialties" />}
-            renderValue={(selected) => selected.join(", ")}
-            MenuProps={MenuProps}
-          >
-            {specialtiesOptions.map((name) => (
-              <MenuItem key={name} value={name}>
-                <Checkbox checked={specialties.indexOf(name) > -1} />
-                <ListItemText primary={name} />
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+          <FormControl sx={{ mt: 1, mb: 1, width: "100%" }}>
+            <InputLabel id="demo-multiple-checkbox-label">Specialties*</InputLabel>
+            <Select
+              labelId="demo-multiple-checkbox-label"
+              id="demo-multiple-checkbox"
+              multiple
+              value={formData.specialties}
+              required
+              onChange={handleChangeSpecialties}
+              input={<OutlinedInput label="Specialties" />}
+              renderValue={(selected) => selected.join(", ")}
+              MenuProps={MenuProps}
+            >
+              {specialtiesOptions.map((name) => (
+                <MenuItem key={name} value={name}>
+                  <Checkbox checked={formData.specialties.indexOf(name) > -1} />
+                  <ListItemText primary={name} />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
 
-        <Button type="submit" variant="contained" color="primary">
-          Submit
-        </Button>
-      </form>
+          <Button type="submit" variant="contained" color="primary">
+            Submit
+          </Button>
+        </form>
       </Container>
     </div>
   );

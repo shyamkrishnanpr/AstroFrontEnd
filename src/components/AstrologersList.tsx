@@ -6,6 +6,22 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 
+import { CircularProgress, Typography } from "@mui/material";
+
+const LoadingIndicator = () => (
+  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+    <CircularProgress />
+  </div>
+);
+
+const NoAstrologersMessage = () => (
+  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+    <Typography variant="h5" color="primary">
+      No astrologers available.... Click Register to add new
+    </Typography>
+  </div>
+);
+
 interface Astrologer {
   _id: string;
   name: string;
@@ -37,12 +53,13 @@ const AstrologersList: React.FC = () => {
   }, [refetch]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <LoadingIndicator />;
   }
 
   if (!astrologers || astrologers.length === 0) {
-    return <p>No astrologers available.</p>;
+    return <NoAstrologersMessage />;
   }
+
 
   const rows = astrologers.map((astrologer: Astrologer) => ({
     id: astrologer._id,

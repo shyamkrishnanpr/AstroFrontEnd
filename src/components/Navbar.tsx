@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'white' }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'black' }}>
             ADMIN PANEL
           </Typography>
           <Box>
