@@ -26,6 +26,7 @@ const Navbar: React.FC = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: 'white' }}>
             ADMIN PANEL
           </Typography>
+          <Box>
           <Button
             color="info"
             variant="outlined"
@@ -44,8 +45,10 @@ const Navbar: React.FC = () => {
             sx={{ backgroundColor: 'white', marginLeft: 2 }}
           >
         
-            NEW REGISTRATION
+            REGISTER
           </Button>
+          </Box>
+          
         </Toolbar>
       </AppBar>
     </Box>

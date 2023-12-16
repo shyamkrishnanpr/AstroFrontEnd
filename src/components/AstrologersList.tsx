@@ -1,5 +1,5 @@
 // AstrologersList.tsx
-import React from "react";
+import React, { useEffect } from "react";
 import { useGetAstrologersQuery } from "../api/api";
 
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -27,9 +27,14 @@ const columns: GridColDef[] = [
 const AstrologersList: React.FC = () => {
   const navigate = useNavigate();
 
-  const { data: astrologers, isLoading } = useGetAstrologersQuery([]);
+  const { data: astrologers, isLoading, refetch } = useGetAstrologersQuery([]);
 
-  console.log(astrologers);
+  useEffect(() => {
+    const fetchData = async () => {
+      await refetch();
+    };
+    fetchData();
+  }, [refetch]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -54,6 +59,7 @@ const AstrologersList: React.FC = () => {
 
   return (
     <>
+    <div style={{ padding: "16px", overflowX: "auto"}}>
       <h1>Astrologers List</h1>
 
       <DataGrid
@@ -74,7 +80,10 @@ const AstrologersList: React.FC = () => {
         })}
         checkboxSelection
         disableRowSelectionOnClick
+        autoHeight
       />
+
+</div>
     </>
   );
 };

@@ -8,7 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-
+import { styled } from "@mui/system";
 import { useCreateAstrologerMutation } from "../api/api";
 
 interface AstrologerFormData {
@@ -29,6 +29,18 @@ const MenuProps = {
     },
   },
 };
+
+const Container = styled("div")({
+  maxWidth: 700,
+  margin: "auto",
+  marginTop:50,
+  
+  padding: 16,
+  textAlign: "center",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  borderRadius: 8,
+  background: "#fff",
+});
 
 const languageOPtions = [
   "English",
@@ -85,8 +97,15 @@ const AstrologerForm: React.FC<AstrologerFormProps> = ({ onSuccess }) => {
     }
   };
 
+  const Title = styled("h2")({
+    color: "#333",
+    marginBottom: 5,
+  });
+
   return (
     <div>
+      <Container>
+      <Title> New Registration </Title>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
           {...register("name")}
@@ -110,7 +129,7 @@ const AstrologerForm: React.FC<AstrologerFormProps> = ({ onSuccess }) => {
           fullWidth
           margin="normal"
         />
-        <FormControl sx={{ mt: 1, width: 600 }} {...register("languages")}>
+        <FormControl sx={{ mt: 1, width: "100%" }} {...register("languages")}>
           <InputLabel id="demo-multiple-checkbox-label">Languages*</InputLabel>
           <Select
             labelId="demo-multiple-checkbox-label"
@@ -133,7 +152,7 @@ const AstrologerForm: React.FC<AstrologerFormProps> = ({ onSuccess }) => {
         </FormControl>
 
         <FormControl
-          sx={{ mt: 1, mb: 1, width: 600 }}
+          sx={{ mt: 1, mb: 1, width: "100%" }}
           {...register("specialties")}
         >
           <InputLabel id="demo-multiple-checkbox-label">
@@ -163,6 +182,7 @@ const AstrologerForm: React.FC<AstrologerFormProps> = ({ onSuccess }) => {
           Submit
         </Button>
       </form>
+      </Container>
     </div>
   );
 };

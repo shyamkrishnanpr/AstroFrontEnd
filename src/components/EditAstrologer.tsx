@@ -30,7 +30,7 @@ const Title = styled("h2")({
   marginBottom: 24,
 });
 
-const FeedbackMessage = styled("p")({
+const FeedbackMessage = styled("h3")({
   color: "green",
   fontWeight: "bold",
 });
@@ -93,7 +93,6 @@ const EditAstrologer: React.FC = () => {
       }
     } catch (err) {
       console.error("Error updating astrologer:", err);
-      // Handle error (e.g., show a user-friendly error message)
     }
   };
 
@@ -112,7 +111,11 @@ const EditAstrologer: React.FC = () => {
   return (
     <Container>
       <Title>Edit Astrologer</Title>
-
+      {isSaved ? (
+        <FeedbackMessage>Changes saved successfully!</FeedbackMessage>
+      ) : (
+        ""
+      )}
       <form>
         <TextField
           label="Name"
@@ -170,11 +173,7 @@ const EditAstrologer: React.FC = () => {
         </SaveButton>
       </form>
 
-      {isSaved ? (
-        <FeedbackMessage>Changes saved successfully!</FeedbackMessage>
-      ) : (
-        ""
-      )}
+    
       {updateError && <ErrorMessage>Error saving changes</ErrorMessage>}
     </Container>
   );

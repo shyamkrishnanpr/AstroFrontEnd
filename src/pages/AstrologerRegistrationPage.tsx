@@ -15,16 +15,16 @@ const handleSuccess = () => {
     setTimeout(() => {
       setSuccessMessage(null);
       navigate('/');
-    }, 3000); 
+    }, 2000); 
   };
   return (
 
     <>
-   <Navbar/>
-    <div>
-        {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
-      <AstrologerForm onSuccess={handleSuccess}/>
-    </div>
+      <Navbar />
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {successMessage && <div style={{ color: 'green', marginTop: '10px',fontSize: '1.2rem', padding: '10px' }}>{successMessage}</div>}
+        <AstrologerForm onSuccess={handleSuccess} />
+      </div>
     </>
   )
 }
