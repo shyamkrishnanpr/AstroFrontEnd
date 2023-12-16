@@ -1,15 +1,14 @@
-import React from 'react'
-import Navbar from '../components/Navbar'
-import EditAstrologer from '../components/EditAstrologer'
+import React from "react";
+import Navbar from "../components/Navbar";
+import EditAstrologer from "../components/EditAstrologer";
 
-const EditPage:React.FC = () => {
+const EditPage: React.FC = () => {
   return (
     <>
-   <Navbar/>
-    <EditAstrologer/>
-      
+      <Navbar />
+      <EditAstrologer />
     </>
-  )
-}
+  );
+};
 
-export default EditPage
+export default EditPage;

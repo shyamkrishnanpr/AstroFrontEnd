@@ -62,7 +62,6 @@ interface AstrologerFormProps {
 }
 
 const AstrologerForm: React.FC<AstrologerFormProps> = ({ onSuccess }) => {
-
   const [formData, setFormData] = useState<AstrologerFormData>({
     name: "",
     gender: "",
@@ -71,23 +70,32 @@ const AstrologerForm: React.FC<AstrologerFormProps> = ({ onSuccess }) => {
     specialties: [],
   });
 
-  const [validationErrors, setValidationErrors] = useState<Partial<Record<keyof AstrologerFormData, string>>>({});
+  const [validationErrors, setValidationErrors] = useState<
+    Partial<Record<keyof AstrologerFormData, string>>
+  >({});
   const [serverError, setServerError] = useState<string | null>(null);
 
   const [createAstrologer] = useCreateAstrologerMutation();
 
-  const handleChangeLanguage = (event: SelectChangeEvent<typeof formData.languages>) => {
+  const handleChangeLanguage = (
+    event: SelectChangeEvent<typeof formData.languages>
+  ) => {
     const {
       target: { value },
     } = event;
     setFormData((prevData) => ({ ...prevData, languages: value as string[] }));
   };
 
-  const handleChangeSpecialties = (event: SelectChangeEvent<typeof formData.specialties>) => {
+  const handleChangeSpecialties = (
+    event: SelectChangeEvent<typeof formData.specialties>
+  ) => {
     const {
       target: { value },
     } = event;
-    setFormData((prevData) => ({ ...prevData, specialties: value as string[] }));
+    setFormData((prevData) => ({
+      ...prevData,
+      specialties: value as string[],
+    }));
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,11 +113,12 @@ const AstrologerForm: React.FC<AstrologerFormProps> = ({ onSuccess }) => {
         onSuccess();
         console.log("Form data submitted:", formData);
       } catch (error) {
-        setServerError("An error occurred while submitting the form. Please try again later.");
+        setServerError(
+          "An error occurred while submitting the form. Please try again later."
+        );
         console.log("Error submitting form:", error);
       }
     } else {
-      
       setValidationErrors(errors);
       console.log("Validation errors:", errors);
     }
@@ -118,8 +127,12 @@ const AstrologerForm: React.FC<AstrologerFormProps> = ({ onSuccess }) => {
   return (
     <div>
       <Container>
-      {serverError && (
-          <Typography variant="body1" color="error" style={{ marginBottom: 16 }}>
+        {serverError && (
+          <Typography
+            variant="body1"
+            color="error"
+            style={{ marginBottom: 16 }}
+          >
             {serverError}
           </Typography>
         )}
@@ -159,8 +172,10 @@ const AstrologerForm: React.FC<AstrologerFormProps> = ({ onSuccess }) => {
             helperText={validationErrors.email || " "}
             margin="normal"
           />
-          <FormControl sx={{  width: "100%" }}>
-            <InputLabel id="demo-multiple-checkbox-label">Languages*</InputLabel>
+          <FormControl sx={{ width: "100%" }}>
+            <InputLabel id="demo-multiple-checkbox-label">
+              Languages*
+            </InputLabel>
             <Select
               labelId="demo-multiple-checkbox-label"
               id="demo-multiple-checkbox"
@@ -182,7 +197,9 @@ const AstrologerForm: React.FC<AstrologerFormProps> = ({ onSuccess }) => {
           </FormControl>
 
           <FormControl sx={{ mt: 1, mb: 1, width: "100%" }}>
-            <InputLabel id="demo-multiple-checkbox-label">Specialties*</InputLabel>
+            <InputLabel id="demo-multiple-checkbox-label">
+              Specialties*
+            </InputLabel>
             <Select
               labelId="demo-multiple-checkbox-label"
               id="demo-multiple-checkbox"

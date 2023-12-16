@@ -9,13 +9,27 @@ import Button from "@mui/material/Button";
 import { CircularProgress, Typography } from "@mui/material";
 
 const LoadingIndicator = () => (
-  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+    }}
+  >
     <CircularProgress />
   </div>
 );
 
 const NoAstrologersMessage = () => (
-  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+  <div
+    style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh",
+    }}
+  >
     <Typography variant="h5" color="primary">
       No astrologers available.... Click Register to add new
     </Typography>
@@ -60,7 +74,6 @@ const AstrologersList: React.FC = () => {
     return <NoAstrologersMessage />;
   }
 
-
   const rows = astrologers.map((astrologer: Astrologer) => ({
     id: astrologer._id,
     name: astrologer.name,
@@ -76,31 +89,30 @@ const AstrologersList: React.FC = () => {
 
   return (
     <>
-    <div style={{ padding: "16px", overflowX: "auto"}}>
-      <h1>Astrologers List</h1>
+      <div style={{ padding: "16px", overflowX: "auto" }}>
+        <h1>Astrologers List</h1>
 
-      <DataGrid
-        rows={rows}
-        columns={columns.concat({
-          field: "edit",
-          headerName: "Edit",
-          width: 100,
-          renderCell: (params) => (
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => handleEditClick(params.row.id)}
-            >
-              Edit
-            </Button>
-          ),
-        })}
-        checkboxSelection
-        disableRowSelectionOnClick
-        autoHeight
-      />
-
-</div>
+        <DataGrid
+          rows={rows}
+          columns={columns.concat({
+            field: "edit",
+            headerName: "Edit",
+            width: 100,
+            renderCell: (params) => (
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => handleEditClick(params.row.id)}
+              >
+                Edit
+              </Button>
+            ),
+          })}
+          checkboxSelection
+          disableRowSelectionOnClick
+          autoHeight
+        />
+      </div>
     </>
   );
 };

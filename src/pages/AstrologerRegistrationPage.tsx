@@ -1,33 +1,47 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom';
-import AstrologerForm from '../components/AstrologerForm'
-import Navbar from '../components/Navbar';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import AstrologerForm from "../components/AstrologerForm";
+import Navbar from "../components/Navbar";
 
+const AstrologerRegistrationPage: React.FC = () => {
+  const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = React.useState<string | null>(
+    null
+  );
 
-const AstrologerRegistrationPage:React.FC = () => {
- 
-const navigate = useNavigate()
-const [successMessage, setSuccessMessage] = React.useState<string | null>(null);
-
-const handleSuccess = () => {
-    
-    setSuccessMessage(' Successfully registered!');
+  const handleSuccess = () => {
+    setSuccessMessage(" Successfully registered!");
     setTimeout(() => {
       setSuccessMessage(null);
-      navigate('/');
-    }, 2000); 
+      navigate("/");
+    }, 2000);
   };
   return (
-
     <>
       <Navbar />
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      
-        {successMessage && <div style={{ color: 'green', marginTop: '5px',fontSize: '1.2rem', padding: '10px' }}>{successMessage}</div>}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        {successMessage && (
+          <div
+            style={{
+              color: "green",
+              marginTop: "5px",
+              fontSize: "1.2rem",
+              padding: "10px",
+            }}
+          >
+            {successMessage}
+          </div>
+        )}
         <AstrologerForm onSuccess={handleSuccess} />
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AstrologerRegistrationPage
+export default AstrologerRegistrationPage;

@@ -17,9 +17,15 @@ export const api = createApi({
     baseUrl: "http://localhost:3000/",
   }),
   endpoints: (builder) => ({
+
+    // GET APi
+
     getAstrologers: builder.query({
       query: () => "api/astrologers",
     }),
+
+     
+    // PUT API
 
     updateAstrologer: builder.mutation<Astrologer,{ id?: string; updatedAstrologer: Astrologer }>({
       query: ({
@@ -38,6 +44,9 @@ export const api = createApi({
         console.log(`Query started: ${query}`);
       },
     }),
+
+
+    // POST API
 
     createAstrologer: builder.mutation<any, Partial<Astrologer>>({
       query: (astrologer) => ({

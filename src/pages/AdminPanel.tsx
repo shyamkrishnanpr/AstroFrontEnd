@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar";
 const AdminPanel: React.FC = () => {
   return (
     <>
-      <Navbar/>
+      <Navbar />
       <AstrologersList />
     </>
   );
