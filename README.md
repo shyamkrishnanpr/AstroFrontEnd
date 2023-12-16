@@ -52,7 +52,7 @@ Run the following command to start the React frontend server.
 
 #### Conclusion
 
-Thank you for following these deployment instructions to set up the React project. By following these steps, you've successfully frontend components.
+Thank you for following these deployment instructions to set up the React project. By following these steps, you've successfully configured the frontend components.
 
 For any questions or clarifications, please feel free to contact me at shyamkrishnasby@gmail.com
 
