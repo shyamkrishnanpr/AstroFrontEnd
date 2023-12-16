@@ -30,7 +30,7 @@ git clone https://github.com/shyamkrishnanpr/AstroFrontEnd.git
 
 Navigate to the `AstroFrontEnd` directory within the cloned project using the command:
 ```bash
-cd AstroFrontEnd
+cd AstroFrontEnd/AstroFrontEnd
  
 ```
 #### Step 3: Install Dependencies
